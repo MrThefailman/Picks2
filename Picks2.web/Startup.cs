@@ -2,28 +2,39 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+//using Picks.infrastructure.Data;
+//using Picks.infrastructure.Repositories.Implementations;
+//using Picks.infrastructure.Repositories.Interfaces;
+//using Picks.infrastructure.Services.Implementations;
+//using Picks.infrastructure.Services.Interfaces;
 
-namespace Picks2.web
+namespace Picks.web
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+        IConfiguration _configuration;
 
-        public IConfiguration Configuration { get; }
+        public Startup(IConfiguration conf)
+        {
+            _configuration = conf;
+        }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var conn = _configuration.GetConnectionString("Picks");
+
+            //services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(conn));
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -33,6 +44,14 @@ namespace Picks2.web
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            //services.AddTransient<IImageRepository, ImageRepository>();
+            //services.AddTransient<IImageService, ImageService>();
+
+            //services.AddTransient<ICategoryRepository, CategoryRepository>();
+            //services.AddTransient<ICategoryService, CategoryService>();
+
+            services.AddAutoMapper();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,7 +63,6 @@ namespace Picks2.web
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
 
