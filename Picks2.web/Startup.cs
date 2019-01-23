@@ -1,21 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-//using Picks.infrastructure.Data;
-//using Picks.infrastructure.Repositories.Implementations;
-//using Picks.infrastructure.Repositories.Interfaces;
-//using Picks.infrastructure.Services.Implementations;
-//using Picks.infrastructure.Services.Interfaces;
+using Picks.infrastructure.Data;
+using Picks.infrastructure.Repositories.Implementations;
+using Picks.infrastructure.Repositories.Interfaces;
+using Picks.infrastructure.Services.Implementations;
+using Picks.infrastructure.Services.Interfaces;
 
 namespace Picks.web
 {
@@ -33,7 +28,7 @@ namespace Picks.web
         {
             var conn = _configuration.GetConnectionString("Picks");
 
-            //services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(conn));
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(conn));
 
             services.Configure<CookiePolicyOptions>(options =>
             {
@@ -45,11 +40,11 @@ namespace Picks.web
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            //services.AddTransient<IImageRepository, ImageRepository>();
-            //services.AddTransient<IImageService, ImageService>();
+            services.AddTransient<IImageRepository, ImageRepository>();
+            services.AddTransient<IImageService, ImageService>();
 
-            //services.AddTransient<ICategoryRepository, CategoryRepository>();
-            //services.AddTransient<ICategoryService, CategoryService>();
+            services.AddTransient<ICategoryRepository, CategoryRepository>();
+            services.AddTransient<ICategoryService, CategoryService>();
 
             services.AddAutoMapper();
         }
