@@ -12,13 +12,13 @@
             <form asp-controller="Category" asp-action="Add" method="post">
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="category-name" class="col-form-label">Namn</label>
-                        <input type="text" class="form-control" id="category-name">
+                        <label asp-for="Name" class="col-form-label">Namn</label>
+                        <input asp-for="Name" type="text" class="form-control">
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Stäng</button>
-                    <button type="button" class="btn btn-primary">Skapa</button>
+                    <button type="submit" class="btn btn-primary">Skapa</button>
                 </div>
             </form>
         </div>

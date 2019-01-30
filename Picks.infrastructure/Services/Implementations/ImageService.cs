@@ -21,7 +21,7 @@ namespace Picks.infrastructure.Services.Implementations
             _mapper = mapper;
         }
 
-        public async Task Add(ImageViewModel vm)
+        public async Task Add(AddImageViewModel vm)
         {
             await _imageRepo.Add(_mapper.Map<Image>(vm));
         }

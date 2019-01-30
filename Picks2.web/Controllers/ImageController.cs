@@ -10,19 +10,30 @@ namespace Picks.web.Controllers
 {
     public class ImageController : Controller
     {
+        private IImageService _imageService;
         private ICategoryService _categoryService;
         public ImageController(
+            IImageService imageService,
             ICategoryService categoryService)
         {
+            _imageService = imageService;
             _categoryService = categoryService;
         }
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        public async Task<IActionResult> Index(AddImageViewModel vm)
         {
-            var vm = new AddImageViewModel
+            var newVM = new AddImageViewModel
             {
                 Categories = await _categoryService.Get()
             };
-            return View(vm);
+            return View(newVM);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Add(AddImageViewModel vm)
+        {
+            await _imageService.Add(vm);
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }

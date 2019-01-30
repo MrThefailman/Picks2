@@ -8,6 +8,6 @@ namespace Picks.infrastructure.Services.Interfaces
     {
         Task<IEnumerable<ImageViewModel>> Get();
         Task<IEnumerable<ImageViewModel>> GetByCategoryId(int categoryId);
-        Task Add(ImageViewModel vm);
+        Task Add(AddImageViewModel vm);
     }
 }
