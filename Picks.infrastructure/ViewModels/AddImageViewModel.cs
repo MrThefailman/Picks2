@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Picks.infrastructure.ViewModels
 {
-    public class AddImageViewModel : BaseViewModel
+    public class AddImageViewModel
     {
         public string Path { get; set; }
         public string Name { get; set; }

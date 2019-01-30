@@ -20,6 +20,7 @@ namespace Picks.infrastructure.Repositories.Implementations
         {
             return await Find().ToListAsync();
         }
+        
 
         public async Task<Category> GetById(int id)
         {

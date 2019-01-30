@@ -1,5 +1,9 @@
 ﻿@model AddImageViewModel
 
+@{
+    ViewData["Title"] = "Ladda upp bild";
+}
+
 <div class="col">
     <form class="form-horizontal" enctype="multipart/form-data">
         <div class="form-group">
@@ -25,18 +29,15 @@
                     }
                 </select>
                 <div class="input-group-append">
-                    <a class="btn btn-primary col-xs-12" href="Category">skapa kategori</a>
+                    <button type="button"
+                            class="btn btn-primary col-xs-12"
+                            data-toggle="modal"
+                            data-target="#CreateCategoryModalTrigger">
+                        eller skapa kategori
+                    </button>
                 </div>
             </div>
         </div>
     </form>
-
-    @*<div class="form-group">
-            <label for="images" class="control-label col-sm-2"><strong>Bilder:</strong></label>
-            <div class="col-sm-4">
-                <input type="file" accept=".jpg,.jpeg,.png" id="images" name="images" class="form-control-file" style="display:none">
-                <button class="btn" id="selectFilesBtn">Välj filer</button>
-                <div class="form-group" id="filePreviews"></div>
-            </div>
-        </div>*@
+    <partial name="CreateCategoryModal" />
 </div>
