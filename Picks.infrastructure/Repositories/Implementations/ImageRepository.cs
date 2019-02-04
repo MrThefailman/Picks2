@@ -5,6 +5,7 @@ using Picks.infrastructure.Repositories.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
 
 namespace Picks.infrastructure.Repositories.Implementations
 {
