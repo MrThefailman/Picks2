@@ -12,8 +12,5 @@ namespace Picks.infrastructure.ViewModels
         public string Name { get; set; }
         public int CategoryId { get; set; }
         public IEnumerable<CategoryViewModel> Categories { get; set; }
-
-        public string BannerClass { get; set; }
-        public string BannerText { get; set; }
     }
 }

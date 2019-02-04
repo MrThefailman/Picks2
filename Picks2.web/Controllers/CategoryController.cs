@@ -18,21 +18,19 @@ namespace Picks.web.Controllers
         }
         public IActionResult Add(CategoryViewModel vm)
         {
-            var newVM = new AddImageViewModel
-            {
-                BannerClass = "success",
-                BannerText = "Du har lagt till en kategori"
-            };
             try
             {
                 _categoryService.Add(vm);
+
+                ViewData["Banner-class"] = "alert-success";
+                ViewData["Banner-text"] = "Du har skapat en ny kategori :D";
             }
             catch
             {
-                newVM.BannerClass = "danger";
-                newVM.BannerText = "Något gick snett :(";
+                ViewData["Banner-class"] = "alert-danger";
+                ViewData["Banner-text"] = "Något gick snett :(";
             }
-            return RedirectToAction("Index", "Image", newVM);
+            return RedirectToAction("Index", "Image");
         }
     }
 }

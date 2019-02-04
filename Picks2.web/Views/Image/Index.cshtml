@@ -4,10 +4,10 @@
     ViewData["Title"] = "Ladda upp bild";
 }
 
-@if (Model.BannerClass != null && Model.BannerText != null)
+@if (ViewData["Banner-text"] != null)
 {
-    <div class="alert alert-@Model.BannerClass" role="alert">
-        @Model.BannerText
+    <div class="alert @ViewData["Banner-class"]" role="alert">
+        @ViewData["Banner-text"]
     </div>
 }
 <div class="col">
@@ -19,9 +19,10 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-sm-2"></label>
+            <label class="control-label col-sm-2">Bild</label>
             <div class="col-xs-8">
-                <input asp-for="Path" type="file" accept=".jpg,.jpeg,.png" class="form-control-file" />
+                <input asp-for="Path" class="form-control-file" type="file" name="Image" accept=".jpg,.jpeg,.png" />
+                <button class="btn btn-primary">Välj filer</button>
             </div>
         </div>
         <div class="form-group">
