@@ -29,8 +29,11 @@ namespace Picks.web.Controllers
             return View(newVM);
         }
         [HttpPost]
-        public async Task<IActionResult> Add(AddImageViewModel vm)
+        public async Task<IActionResult> Upload(AddImageViewModel vm)
         {
+            var UploadImage = Request.Form.Files;
+
+
             await _imageService.Add(vm);
 
             return RedirectToAction("Index", "Home");
