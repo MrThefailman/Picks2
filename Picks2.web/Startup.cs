@@ -40,11 +40,11 @@ namespace Picks.web
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            //services.AddDistributedRedisCache(opt =>
-            //{
-            //    opt.Configuration = _configuration.GetConnectionString("Redis");
-            //    opt.InstanceName = "main_";
-            //});
+            services.AddDistributedRedisCache(opt =>
+            {
+                opt.Configuration = _configuration.GetConnectionString("Redis");
+                opt.InstanceName = "main_";
+            });
 
             services.AddSession(opt =>
             {

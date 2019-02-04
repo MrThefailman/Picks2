@@ -3,7 +3,13 @@
     ViewData["Title"] = "Start";
 }
 
-<p class="alert-danger">@ViewData["SessionMessage"]</p>
+<p class="alert-danger">
+    @ViewData["CurrentTime"]
+    <br />
+    @ViewData["CacheData"]
+    <br />
+    @ViewData["TheName"]
+</p>
 
 <div class="row" style="margin-top: 4em;">
     <div class="card col-sm-4">
