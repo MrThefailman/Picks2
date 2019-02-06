@@ -11,6 +11,6 @@ namespace Picks.infrastructure.Services.Interfaces
         Task<IEnumerable<ImageViewModel>> Get();
         Task<IEnumerable<ImageViewModel>> GetByCategoryId(int categoryId);
         Task Add(AddImageViewModel vm);
-        Task<UploadResult> UploadImage(IFormFileCollection files, int categoryId);
+        Task<UploadResult> UploadImage(IFormFileCollection files, AddImageViewModel vm);
     }
 }

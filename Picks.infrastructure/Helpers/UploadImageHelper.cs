@@ -52,29 +52,29 @@ namespace Picks.infrastructure.Helpers
 
                 // Blob in azure.
                 CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
-                CloudBlobContainer container = blobClient.GetContainerReference("assets");
+                CloudBlobContainer container = blobClient.GetContainerReference("uploads");
                 CloudBlockBlob blockBlob = container.GetBlockBlobReference($"img/fullsize/{fileName}");
                 blockBlob.Properties.ContentType = contentType;
 
                 using (Stream fileStream = file.OpenReadStream())
                 {
                     // Fullsize.
-                    await blockBlob.UploadFromStreamAsync(fileStream);
-                    CloudBlockBlob blockBlobThumbnail = container.GetBlockBlobReference($"img/thumbnails/{fileName}");
-                    blockBlobThumbnail.Properties.ContentType = contentType;
+                    //await blockBlob.UploadFromStreamAsync(fileStream);
+                    //CloudBlockBlob blockBlobThumbnail = container.GetBlockBlobReference($"img/thumbnails/{fileName}");
+                    //blockBlobThumbnail.Properties.ContentType = contentType;
                     // Save the fullsize.
                     fileStream.Seek(0, SeekOrigin.Begin);
                     await blockBlob.UploadFromStreamAsync(fileStream);
 
-                    var outputStream = new MemoryStream();
-                    using (Image<Rgba32> image = SixLabors.ImageSharp.Image.Load(fileStream, decoder))
-                    {
-                        image.Mutate(x => x.Resize(544, 362));
-                        image.Save(outputStream, encoder);
-                        outputStream.Seek(0, SeekOrigin.Begin);
-                        // Save resized.
-                        await blockBlobThumbnail.UploadFromStreamAsync(outputStream);
-                    }
+                    //var outputStream = new MemoryStream();
+                    //using (Image<Rgba32> image = SixLabors.ImageSharp.Image.Load(fileStream, decoder))
+                    //{
+                    //    image.Mutate(x => x.Resize(544, 362));
+                    //    image.Save(outputStream, encoder);
+                    //    outputStream.Seek(0, SeekOrigin.Begin);
+                    //    // Save resized.
+                    //    await blockBlobThumbnail.UploadFromStreamAsync(outputStream);
+                    //}
                 }
 
                 return blockBlob.Uri;

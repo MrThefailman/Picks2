@@ -39,19 +39,7 @@ namespace Picks.web.Controllers
         public async Task<IActionResult> Upload(AddImageViewModel vm)
         {
             var UploadImage = Request.Form.Files;
-
-            var result = await _imageService.UploadImage(UploadImage, vm.CategoryId);
-
-            //foreach(var file in UploadImage)
-            //{
-            //    if (UploadImageHelper.IsImage(file))
-            //    {
-            //        var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
-            //        _uploadImageHelper.UploadImage(file, fileName, file.ContentType, _azureStorageConfig);
-            //    }
-            //}
-            
-            //await _imageService.Add(vm);
+            var result = await _imageService.UploadImage(UploadImage, vm);
 
             return RedirectToAction("Index", "Home");
         }

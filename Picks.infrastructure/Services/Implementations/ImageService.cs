@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Picks.core.Entities;
 using Picks.infrastructure.Helpers;
 using Picks.infrastructure.Repositories.Interfaces;
@@ -26,7 +27,6 @@ namespace Picks.infrastructure.Services.Implementations
         public readonly IConfiguration _config;
         private readonly AzureStorageConfig _azureStorageConfig;
         public readonly UploadImageHelper _imageHelper;
-        public readonly AzureCognitiveServicesSettings _azureCognitiveServicesSettings;
 
         public ImageService(
             IImageRepository imageRepo,
@@ -34,9 +34,8 @@ namespace Picks.infrastructure.Services.Implementations
             IMapper mapper,
             IHostingEnvironment env,
             IConfiguration config,
-            AzureStorageConfig azureStorageConfig,
-            UploadImageHelper imageHelper,
-            AzureCognitiveServicesSettings azureCognitiveServicesSettings)
+            IOptions<AzureStorageConfig> azureStorageConfig,
+            UploadImageHelper imageHelper)
         {
             _imageRepo = imageRepo;
             _categoryRepo = categoryRepo;
@@ -44,8 +43,7 @@ namespace Picks.infrastructure.Services.Implementations
             _env = env;
             _config = config;
             _imageHelper = imageHelper;
-            _azureStorageConfig = azureStorageConfig;
-            _azureCognitiveServicesSettings = azureCognitiveServicesSettings;
+            _azureStorageConfig = azureStorageConfig.Value;
             _env = env;
         }
 
@@ -75,7 +73,7 @@ namespace Picks.infrastructure.Services.Implementations
 
         }
 
-        public async Task<UploadResult> UploadImage(IFormFileCollection files, int categoryId)
+        public async Task<UploadResult> UploadImage(IFormFileCollection files, AddImageViewModel vm)
         {
             var result = new UploadResult();
             foreach (var file in files)
@@ -83,6 +81,7 @@ namespace Picks.infrastructure.Services.Implementations
                 if (UploadImageHelper.IsImage(file))
                 {
                     var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
+                    // Uploads image to blobStorage
                     var blobUri = await UploadImageHelper.UploadImage(file, fileName, file.ContentType, _azureStorageConfig);
                     if (blobUri != null)
                     {
@@ -90,9 +89,10 @@ namespace Picks.infrastructure.Services.Implementations
                         {
                             var img = new Image()
                             {
-                                CategoryId = categoryId,
-                                Name = fileName,
-                                Created = DateTime.Now
+                                CategoryId = vm.CategoryId,
+                                Name = vm.Name,
+                                Created = DateTime.Now,
+                                Path = blobUri.AbsoluteUri
                             };
 
                             await _imageRepo.Add(img);

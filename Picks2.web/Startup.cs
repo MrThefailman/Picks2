@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Picks.core.Entities;
 using Picks.infrastructure.Data;
+using Picks.infrastructure.Helpers;
 using Picks.infrastructure.Repositories.Implementations;
 using Picks.infrastructure.Repositories.Interfaces;
 using Picks.infrastructure.Services.Implementations;
@@ -57,6 +59,9 @@ namespace Picks.web
             services.AddTransient<ICategoryRepository, CategoryRepository>();
             services.AddTransient<ICategoryService, CategoryService>();
 
+            services.Configure<AzureStorageConfig>(options => _configuration.GetSection("AzureStorageConfig").Bind(options));
+            services.AddTransient<UploadImageHelper>();
+            services.AddTransient<AzureCognitiveServicesSettings>();
             services.AddAutoMapper();
         }
 
