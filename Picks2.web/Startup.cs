@@ -45,7 +45,7 @@ namespace Picks.web
             services.AddDistributedRedisCache(opt =>
             {
                 opt.Configuration = _configuration.GetConnectionString("Redis");
-                opt.InstanceName = "main_";
+                //opt.InstanceName = "main_";
             });
 
             services.AddSession(opt =>
