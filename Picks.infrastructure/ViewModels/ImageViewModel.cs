@@ -6,7 +6,7 @@ namespace Picks.infrastructure.ViewModels
 {
     public class ImageViewModel : BaseViewModel
     {
-        public Guid Guid { get; set; }
+        public string Path { get; set; }
         public string Name { get; set; }
         public Category Category { get; set; }
         public virtual int CategoryId { get; set; }
