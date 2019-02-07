@@ -16,26 +16,32 @@ namespace Picks2.web.Controllers
     {
         private readonly IDistributedCache _cache;
         private readonly IImageService _imageService;
+        private readonly ICategoryService _categoryService;
         public HomeController(
             IDistributedCache cache,
-            IImageService imageService)
+            IImageService imageService,
+            ICategoryService categoryService)
         {
             _cache = cache;
             _imageService = imageService;
+            _categoryService = categoryService;
         }
-        public async Task<IActionResult> Index(int categoryId)
+        public async Task<IActionResult> Index(ImageCategoryViewModel vm)
         {
             IEnumerable<ImageViewModel> images = null;
-            if(categoryId == 0)
+            if (vm.CategoryId == 0)
             {
                 images = await _imageService.Get();
             }
             else
             {
-                images = await _imageService.GetByCategoryId(categoryId);
+                images = await _imageService.GetByCategoryId(vm.CategoryId);
             }
 
-            return View(images);
+            vm.Categories = await _categoryService.Get();
+            vm.Images = images;
+
+            return View(vm);
         }
     }
 }

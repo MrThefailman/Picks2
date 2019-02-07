@@ -1,28 +1,42 @@
-﻿@model IEnumerable<ImageViewModel>
+﻿@model ImageCategoryViewModel
 
 @{
     ViewData["Title"] = "Start";
 }
 
 @*<p class="alert-danger">
-    @ViewData["CurrentTime"]
-    <br />
-    @ViewData["CacheData"]
-    <br />
-    @ViewData["TheName"]
-</p>*@
-<div class="row" style="margin-top:4em;">
-    @*<select></select>*@
+        @ViewData["CurrentTime"]
+        <br />
+        @ViewData["CacheData"]
+        <br />
+        @ViewData["TheName"]
+    </p>*@
+<div class="row">
+    <div class="col col-sm-12">
+        <form asp-action="Index" asp-controller="Home">
+            <div class="input-group">
+                <select class="custom-select" asp-for="CategoryId">
+                    <option selected disabled>Sök på kategorier</option>
+                    <option value="0">Alla</option>
+                    @foreach (var cat in Model.Categories)
+                    {
+                        <option value="@cat.Id">@cat.Name</option>
+                    }
+                </select>
+                <div>
+                    <button class="btn btn-outline-secondary" type="submit">Sök</button>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
-
+<br />
 <div class="row">
     <div class="card-columns">
-        @foreach (var img in Model)
+        @foreach (var img in Model.Images)
         {
             <div class="card">
-                <div style="max-width:200px; max-height:200px">
-                    <img class="card-img-top" src="@img.Path" alt="Card image cap" height="200">
-                </div>
+                <img class="card-img-top" src="@img.Path" alt="Card image cap">
                 <div class="card-body">
                     <h5 class="card-title">@img.Name</h5>
                     <p class="card-text"><small class="text-muted">Skapad: @img.DisplayDate</small></p>

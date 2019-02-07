@@ -8,26 +8,6 @@
     <link rel="stylesheet" href="~/lib/bootstrap/bootstrap.min.css" />
 </head>
 <body>
-    @*<nav class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a asp-controller="Home" asp-action="Index" class="navbar-brand">Picks</a>
-                </div>
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li><a asp-controller="Home" asp-action="Index">Hem</a></li>
-                        <li><a asp-controller="Image" asp-action="Index">Ladda upp bild</a></li>
-                        <li><button class="btn btn-primary" style="margin-top:15%">Korg</button></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>*@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a asp-controller="Home" asp-action="Index" class="navbar-brand">Picks</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,16 +17,6 @@
             <ul class="navbar-nav">
                 <li class="nav-item"><a asp-controller="Home" asp-action="Index" class="nav-link">Hem</a></li>
                 <li class="nav-item"><a asp-controller="Image" asp-action="Index" class="nav-link">Ladda upp bild</a></li>
-                @*<li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Dropdown link
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                </div>
-            </li>*@
             </ul>
             <button class="btn btn-primary">Korg</button>
         </div>
