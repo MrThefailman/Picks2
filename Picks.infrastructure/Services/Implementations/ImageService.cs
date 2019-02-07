@@ -65,6 +65,11 @@ namespace Picks.infrastructure.Services.Implementations
             return _mapper.Map<IEnumerable<ImageViewModel>>(await _imageRepo.Get());
         }
 
+        public async Task<ImageViewModel> GetById(int id)
+        {
+            return _mapper.Map<ImageViewModel>(await _imageRepo.GetById(id));
+        }
+
         public async Task<IEnumerable<ImageViewModel>> GetByCategoryId(int categoryId)
         {
             var Images = await _imageRepo.Get();

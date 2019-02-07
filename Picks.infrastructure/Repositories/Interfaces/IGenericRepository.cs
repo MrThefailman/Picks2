@@ -7,5 +7,6 @@ namespace Picks.infrastructure.Repositories.Interfaces
     {
         Task Add(TEntity entity);
         IQueryable<TEntity> Find();
+        Task<TEntity> FindById(int id);
     }
 }

@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Picks.core.Entities;
 using Picks.infrastructure.Extensions;
+using Picks.infrastructure.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -23,15 +24,15 @@ namespace Picks.infrastructure.Cart
             return cart;
         }
 
-        public override void AddToCart(Image img, int quantity)
+        public override void AddToCart(ImageViewModel img, int quantity)
         {
             base.AddToCart(img, quantity);
             CommitToSession();
         }
 
-        public override void RemoveCartRow(Image p)
+        public override void RemoveCartRow(ImageViewModel img)
         {
-            base.RemoveCartRow(p);
+            base.RemoveCartRow(img);
             CommitToSession();
         }
 
@@ -47,23 +48,3 @@ namespace Picks.infrastructure.Cart
         }
     }
 }
-//await HttpContext.Session.LoadAsync();
-//var value = await _cache.GetStringAsync("The_cache_key");
-
-//if (value == null)
-//{
-//    value = $"value from session: {DateTime.Now.ToString(CultureInfo.CurrentCulture)}";
-//    await _cache.SetStringAsync("The_cache_key", value);
-//}
-
-//ViewData["CacheData"] = $"Cached time: {value}";
-//ViewData["CurrentTime"] = $"Current time {DateTime.Now.ToString(CultureInfo.CurrentCulture)}";
-
-//var theNameFromSession = HttpContext.Session.Get<string>("name");
-//if (string.IsNullOrEmpty(theNameFromSession))
-//{
-//    HttpContext.Session.Set("name", name);
-//    theNameFromSession = name;
-//}
-
-//ViewData["TheName"] = $"The name from the session: {theNameFromSession}";

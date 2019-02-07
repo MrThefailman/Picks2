@@ -22,6 +22,11 @@ namespace Picks.infrastructure.Repositories.Implementations
         {
             return await Find().ToListAsync();
         }
+        
+        public async Task<Image> GetById(int id)
+        {
+            return await FindById(id);
+        }
 
         public async Task<IEnumerable<Image>> GetByCategoryId(int categoryId)
         {

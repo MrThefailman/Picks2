@@ -1,4 +1,5 @@
 ﻿using Picks.core.Entities;
+using Picks.infrastructure.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -12,9 +13,9 @@ namespace Picks.infrastructure.Cart
 
         public virtual IEnumerable<CartRow> CartRows => _cartRows;
 
-        public virtual void AddToCart(Image img, int quantity)
+        public virtual void AddToCart(ImageViewModel img, int quantity)
         {
-            var cartRow = _cartRows.Where(x => x.Image.Id == img.Id).FirstOrDefault();
+            var cartRow = _cartRows.Where(x => x.Image == img).FirstOrDefault();
             if (cartRow == null)
             {
                 _cartRows.Add(new CartRow
@@ -23,15 +24,11 @@ namespace Picks.infrastructure.Cart
                     Quantity = quantity
                 });
             }
-            else
-            {
-                cartRow.Quantity += quantity;
-            }
         }
 
-        public virtual void RemoveCartRow(Image img)
+        public virtual void RemoveCartRow(ImageViewModel img)
         {
-            _cartRows.RemoveAll(x => x.Image.Id == img.Id);
+            _cartRows.RemoveAll(x => x.Image == img);
         }
 
         public virtual void EmptyCart()

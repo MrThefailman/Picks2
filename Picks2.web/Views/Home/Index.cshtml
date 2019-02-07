@@ -40,7 +40,12 @@
                 <div class="card-body">
                     <h5 class="card-title">@img.Name</h5>
                     <p class="card-text"><small class="text-muted">Skapad: @img.DisplayDate</small></p>
-                    <a href="@img.Path" download="@img.Name" class="btn btn-primary">Ladda ner</a>
+                    <a href="@img.Path" download="@img.Name" class="col col-sm-6">
+                        <button class="btn btn-primary">Ladda ner</button>
+                    </a>
+                    <a asp-action="AddToCart" asp-controller="Cart" asp-route-imgId="@img.Id" class="col col-sm-6">
+                        <button class="btn btn-success">Lägg i korg</button>
+                    </a>
                 </div>
             </div>
         }

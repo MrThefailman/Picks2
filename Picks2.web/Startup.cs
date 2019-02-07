@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Picks.core.Entities;
+using Picks.infrastructure.Cart;
 using Picks.infrastructure.Data;
 using Picks.infrastructure.Helpers;
 using Picks.infrastructure.Repositories.Implementations;
@@ -31,15 +32,14 @@ namespace Picks.web
             var conn = _configuration.GetConnectionString("Picks");
 
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(conn));
-
+            
             //services.Configure<CookiePolicyOptions>(options =>
             //{
             //    // This lambda determines whether user consent for non-essential cookies is needed for a given request.
             //    options.CheckConsentNeeded = context => true;
             //    options.MinimumSameSitePolicy = SameSiteMode.None;
             //});
-
-
+            
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddDistributedRedisCache(opt =>
@@ -47,17 +47,23 @@ namespace Picks.web
                 opt.Configuration = _configuration.GetConnectionString("Redis");
                 //opt.InstanceName = "main_";
             });
-
+            services.AddMemoryCache();
             services.AddSession(opt =>
             {
                 opt.Cookie.Name = "Picks.io";
             });
+
+            services.AddScoped(x => CartSession.GetCart(x));
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
 
             services.AddTransient<IImageRepository, ImageRepository>();
             services.AddTransient<IImageService, ImageService>();
 
             services.AddTransient<ICategoryRepository, CategoryRepository>();
             services.AddTransient<ICategoryService, CategoryService>();
+
+            services.AddTransient<CartSession>();
 
             services.Configure<AzureStorageConfig>(options => _configuration.GetSection("AzureStorageConfig").Bind(options));
             services.AddTransient<UploadImageHelper>();
@@ -76,12 +82,12 @@ namespace Picks.web
             {
                 app.UseHsts();
             }
-
-            app.UseSession();
-
+            
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+
+            app.UseSession();
 
             app.UseMvc(routes =>
             {

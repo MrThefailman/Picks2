@@ -9,6 +9,7 @@ namespace Picks.infrastructure.Services.Interfaces
     public interface IImageService
     {
         Task<IEnumerable<ImageViewModel>> Get();
+        Task<ImageViewModel> GetById(int id);
         Task<IEnumerable<ImageViewModel>> GetByCategoryId(int categoryId);
         Task Add(AddImageViewModel vm);
         Task<UploadResult> UploadImage(IFormFileCollection files, AddImageViewModel vm);

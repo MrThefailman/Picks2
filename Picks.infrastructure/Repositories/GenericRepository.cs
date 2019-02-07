@@ -29,5 +29,12 @@ namespace Picks.infrastructure.Repositories
             return _context.Set<TEntity>().AsNoTracking()
                 .OrderByDescending(x => x.Created);
         }
+
+        public async Task<TEntity> FindById(int id)
+        {
+            return await _context.Set<TEntity>()
+                .AsNoTracking()
+                .SingleOrDefaultAsync(x => x.Id == id);
+        }
     }
 }
