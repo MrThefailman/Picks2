@@ -2,6 +2,7 @@
 using Picks.infrastructure.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Picks.infrastructure.Cart
 {
@@ -13,7 +14,7 @@ namespace Picks.infrastructure.Cart
 
         public virtual IEnumerable<CartRow> CartRows => _cartRows;
 
-        public virtual void AddToCart(ImageViewModel img, int quantity)
+        public virtual async Task AddToCart(ImageViewModel img, int quantity)
         {
             var cartRow = _cartRows.Where(x => x.Image == img).FirstOrDefault();
             if (cartRow == null)
@@ -26,12 +27,12 @@ namespace Picks.infrastructure.Cart
             }
         }
 
-        public virtual void RemoveCartRow(ImageViewModel img)
+        public virtual async Task RemoveCartRow(ImageViewModel img)
         {
             _cartRows.RemoveAll(x => x.Image == img);
         }
 
-        public virtual void EmptyCart()
+        public virtual async Task EmptyCart()
         {
             _cartRows.Clear();
         }

@@ -28,7 +28,7 @@ namespace Picks.web.Controllers
             if (imgId > 0)
             {
                 var img = await _imageService.GetById(imgId);
-                _cart.AddToCart(img, 1);
+                await _cart.AddToCart(img, 1);
             }
 
             return RedirectToAction(nameof(Index), new { returnUrl });

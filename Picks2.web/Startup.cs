@@ -48,6 +48,7 @@ namespace Picks.web
                 //opt.InstanceName = "main_";
             });
             services.AddMemoryCache();
+
             services.AddSession(opt =>
             {
                 opt.Cookie.Name = "Picks.io";
@@ -55,8 +56,7 @@ namespace Picks.web
 
             services.AddScoped(x => CartSession.GetCart(x));
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
-
+            
             services.AddTransient<IImageRepository, ImageRepository>();
             services.AddTransient<IImageService, ImageService>();
 

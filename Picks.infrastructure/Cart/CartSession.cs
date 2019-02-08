@@ -8,6 +8,7 @@ using Picks.infrastructure.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Picks.infrastructure.Cart
 {
@@ -16,35 +17,35 @@ namespace Picks.infrastructure.Cart
         [JsonIgnore] //No need to Deserialize or Serialize the ISession property
         public ISession Session { get; private set; }
 
-        public static Cart GetCart(IServiceProvider services)
+        public static async Task<Cart> GetCart(IServiceProvider services)
         {
             ISession session = services.GetRequiredService<IHttpContextAccessor>()?.HttpContext.Session;
-            CartSession cart = session.Get<CartSession>(CartKey) ?? new CartSession();
+            CartSession cart = await session.Get<CartSession>(CartKey) ?? new CartSession();
             cart.Session = session;
             return cart;
         }
 
-        public override void AddToCart(ImageViewModel img, int quantity)
+        public override async Task AddToCart(ImageViewModel img, int quantity)
         {
-            base.AddToCart(img, quantity);
-            CommitToSession();
+            await base.AddToCart(img, quantity);
+            await CommitToSession();
         }
 
-        public override void RemoveCartRow(ImageViewModel img)
+        public override async Task RemoveCartRow(ImageViewModel img)
         {
-            base.RemoveCartRow(img);
-            CommitToSession();
+            await base.RemoveCartRow(img);
+            await CommitToSession();
         }
 
-        public override void EmptyCart()
+        public override async Task EmptyCart()
         {
-            base.EmptyCart();
+            await base.EmptyCart();
             Session.Remove(CartKey);
         }
 
-        private void CommitToSession()
+        private async Task CommitToSession()
         {
-            Session.Set(CartKey, this);
+            await Session.Set(CartKey, this);
         }
     }
 }
