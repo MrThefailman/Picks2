@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
+using Picks.core.Entities;
 using Picks.infrastructure.Extensions;
 using Picks.infrastructure.Services.Interfaces;
 using Picks.infrastructure.ViewModels;
@@ -24,7 +26,7 @@ namespace Picks2.web.Controllers
             _imageService = imageService;
             _categoryService = categoryService;
         }
-        public async Task<IActionResult> Index(ImageCategoryViewModel vm, string name)
+        public async Task<IActionResult> Index(ImageCategoryViewModel vm)
         {
             IEnumerable<ImageViewModel> images = null;
             if (vm.CategoryId == 0)
@@ -35,40 +37,22 @@ namespace Picks2.web.Controllers
             {
                 images = await _imageService.GetByCategoryId(vm.CategoryId);
             }
-            //var name = "Kalle";
-            var sessionName = await HttpContext.Session.Get<string>("name");
-            if (!string.IsNullOrEmpty(name))
-            {
-                await HttpContext.Session.Set("name", name);
-                sessionName = name;
-            }
-            ViewData["TheName"] = $"The name of the session: {sessionName}";
-
             vm.Categories = await _categoryService.Get();
             vm.Images = images;
             
             return View(vm);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Upload(AddImageViewModel vm)
+        {
+            var UploadImage = Request.Form.Files;
+            var result = await _imageService.UploadImage(UploadImage, vm);
+            bool addedImage = false;
+            if (result != null)
+                addedImage = true;
+
+            return RedirectToAction("Index", addedImage);
+        }
     }
 }
-
-//await HttpContext.Session.LoadAsync();
-//var value = await _cache.GetStringAsync("The_cache_key");
-
-//if (value == null)
-//{
-//    value = $"value from session: {DateTime.Now.ToString(CultureInfo.CurrentCulture)}";
-//    await _cache.SetStringAsync("The_cache_key", value);
-//}
-
-//ViewData["CacheData"] = $"Cached time: {value}";
-//ViewData["CurrentTime"] = $"Current time {DateTime.Now.ToString(CultureInfo.CurrentCulture)}";
-
-//var theNameFromSession = HttpContext.Session.Get<string>("name");
-//if (string.IsNullOrEmpty(theNameFromSession))
-//{
-//    HttpContext.Session.Set("name", name);
-//    theNameFromSession = name;
-//}
-
-//ViewData["TheName"] = $"The name from the session: {theNameFromSession}";

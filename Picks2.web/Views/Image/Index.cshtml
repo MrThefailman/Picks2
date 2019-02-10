@@ -4,14 +4,8 @@
     ViewData["Title"] = "Ladda upp bild";
 }
 
-@if (ViewData["Banner-text"] != null)
-{
-    <div class="alert @ViewData["Banner-class"]" role="alert">
-        @ViewData["Banner-text"]
-    </div>
-}
 <div class="col">
-    <form asp-controller="Image" asp-action="Upload" method="post" class="form-horizontal" enctype="multipart/form-data">
+    <form asp-controller="Home" asp-action="Upload" method="post" class="form-horizontal" enctype="multipart/form-data">
         <div class="form-group">
             <label class="control-label col-sm-2">Namn</label>
             <div class="col-xs-8">

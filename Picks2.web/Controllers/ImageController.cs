@@ -14,18 +14,13 @@ namespace Picks.web.Controllers
 {
     public class ImageController : Controller
     {
-        private readonly IImageService _imageService;
         private readonly ICategoryService _categoryService;
-        private readonly UploadImageHelper _uploadImageHelper;
         public ImageController(
-            IImageService imageService,
-            ICategoryService categoryService,
-            UploadImageHelper uploadImageHelper)
+            ICategoryService categoryService)
         {
-            _imageService = imageService;
             _categoryService = categoryService;
-            _uploadImageHelper = uploadImageHelper;
         }
+
         [HttpGet]
         public async Task<IActionResult> Index(AddImageViewModel vm)
         {
@@ -34,14 +29,6 @@ namespace Picks.web.Controllers
                 Categories = await _categoryService.Get()
             };
             return View(newVM);
-        }
-        [HttpPost]
-        public async Task<IActionResult> Upload(AddImageViewModel vm)
-        {
-            var UploadImage = Request.Form.Files;
-            var result = await _imageService.UploadImage(UploadImage, vm);
-
-            return RedirectToAction("Index", "Home");
         }
     }
 }

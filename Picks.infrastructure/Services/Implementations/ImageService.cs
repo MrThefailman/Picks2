@@ -85,7 +85,8 @@ namespace Picks.infrastructure.Services.Implementations
             {
                 if (UploadImageHelper.IsImage(file))
                 {
-                    var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
+                    var fileName = vm.Name.Replace(' ', '_');
+                    fileName = $"{Guid.NewGuid()}{vm.Name}";
                     // Uploads image to blobStorage
                     var blobUri = await UploadImageHelper.UploadImage(file, fileName, file.ContentType, _azureStorageConfig);
                     if (blobUri != null)
