@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
-using Picks.infrastructure.Constants;
 using Picks.infrastructure.Extensions;
 using Picks.infrastructure.Services.Interfaces;
 using Picks.infrastructure.ViewModels;
@@ -26,7 +24,7 @@ namespace Picks2.web.Controllers
             _imageService = imageService;
             _categoryService = categoryService;
         }
-        public async Task<IActionResult> Index(ImageCategoryViewModel vm)
+        public async Task<IActionResult> Index(ImageCategoryViewModel vm, string name)
         {
             IEnumerable<ImageViewModel> images = null;
             if (vm.CategoryId == 0)
@@ -37,10 +35,18 @@ namespace Picks2.web.Controllers
             {
                 images = await _imageService.GetByCategoryId(vm.CategoryId);
             }
+            //var name = "Kalle";
+            var sessionName = await HttpContext.Session.Get<string>("name");
+            if (!string.IsNullOrEmpty(name))
+            {
+                await HttpContext.Session.Set("name", name);
+                sessionName = name;
+            }
+            ViewData["TheName"] = $"The name of the session: {sessionName}";
 
             vm.Categories = await _categoryService.Get();
             vm.Images = images;
-
+            
             return View(vm);
         }
     }

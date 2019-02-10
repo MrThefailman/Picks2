@@ -26,7 +26,8 @@ namespace Picks.infrastructure.Repositories
 
         public IQueryable<TEntity> Find()
         {
-            return _context.Set<TEntity>().AsNoTracking()
+            return _context.Set<TEntity>()
+                .AsNoTracking()
                 .OrderByDescending(x => x.Created);
         }
 

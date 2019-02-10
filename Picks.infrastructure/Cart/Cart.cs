@@ -1,4 +1,6 @@
-﻿using Picks.core.Entities;
+﻿using Microsoft.AspNetCore;
+using Picks.core.Entities;
+using Picks.infrastructure.Constants;
 using Picks.infrastructure.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +26,26 @@ namespace Picks.infrastructure.Cart
                     Image = img,
                     Quantity = quantity
                 });
+
+                if(_cartRows.Count() > 0)
+                {
+
+                }
             }
+            
+        }
+        public virtual async Task<List<CartRow>> AddToCartAsync(ImageViewModel img, int quantity)
+        {
+            var cartRow = _cartRows.Where(x => x.Image == img).FirstOrDefault();
+            if(cartRow == null)
+            {
+                _cartRows.Add(new CartRow
+                {
+                    Image = img,
+                    Quantity = quantity
+                });
+            }
+            return _cartRows;
         }
 
         public virtual async Task RemoveCartRow(ImageViewModel img)

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using Picks.core.Entities;
 using Picks.infrastructure.Cart;
 using Picks.infrastructure.Data;
@@ -29,34 +30,17 @@ namespace Picks.web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvc().AddJsonOptions(
+                options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            );
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
             var conn = _configuration.GetConnectionString("Picks");
 
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(conn));
-            
-            //services.Configure<CookiePolicyOptions>(options =>
-            //{
-            //    // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-            //    options.CheckConsentNeeded = context => true;
-            //    options.MinimumSameSitePolicy = SameSiteMode.None;
-            //});
-            
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            services.AddDistributedRedisCache(opt =>
-            {
-                opt.Configuration = _configuration.GetConnectionString("Redis");
-                //opt.InstanceName = "main_";
-            });
-            services.AddMemoryCache();
-
-            services.AddSession(opt =>
-            {
-                opt.Cookie.Name = "Picks.io";
-            });
-
-            services.AddScoped(x => CartSession.GetCart(x));
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            
+            // Project services.
             services.AddTransient<IImageRepository, ImageRepository>();
             services.AddTransient<IImageService, ImageService>();
 
@@ -64,10 +48,32 @@ namespace Picks.web
             services.AddTransient<ICategoryService, CategoryService>();
 
             services.AddTransient<CartSession>();
-
-            services.Configure<AzureStorageConfig>(options => _configuration.GetSection("AzureStorageConfig").Bind(options));
+            
             services.AddTransient<UploadImageHelper>();
             services.AddTransient<AzureCognitiveServicesSettings>();
+
+            services.AddScoped(x => CartSession.GetCart(x));
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+
+            services.AddMemoryCache();
+            services.AddSession(opt =>
+            {
+                opt.Cookie.Name = "Picks.io";
+            });
+
+            services.AddDistributedRedisCache(opt =>
+            {
+                opt.Configuration = _configuration.GetConnectionString("Redis");
+                //opt.InstanceName = "main_";
+            });
+
             services.AddAutoMapper();
         }
 
