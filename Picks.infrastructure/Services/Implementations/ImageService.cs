@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Picks.core.Entities;
+using Picks.infrastructure.Constants;
 using Picks.infrastructure.Helpers;
 using Picks.infrastructure.Repositories.Interfaces;
 using Picks.infrastructure.Services.Interfaces;
@@ -14,6 +15,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Picks.infrastructure.Services.Implementations
@@ -85,28 +87,33 @@ namespace Picks.infrastructure.Services.Implementations
             {
                 if (UploadImageHelper.IsImage(file))
                 {
-                    var fileName = vm.Name.Replace(' ', '_');
-                    fileName = $"{Guid.NewGuid()}{vm.Name}";
-                    // Uploads image to blobStorage
-                    var blobUri = await UploadImageHelper.UploadImage(file, fileName, file.ContentType, _azureStorageConfig);
-                    if (blobUri != null)
+                    vm.Name.Replace(' ', '_');
+                    var fileName = $"{Guid.NewGuid()}{vm.Name}";
+
+                    var fileStream = await UploadImageHelper.UploadImage(file, fileName, file.ContentType, _azureStorageConfig);
+                    if (fileStream != null)
                     {
-                        try
-                        {
+                        //try
+                        //{
+                            var client = new WebClient();
+                            client.Credentials = new NetworkCredential(CDNProfile.Username, CDNProfile.Password);
+                            client.UploadFile(
+                                  "ftp://user_o2udupts@push-33.cdn77.com/www/Picks",
+                                  WebRequestMethods.Ftp.AppendFile,
+                                  $"{fileStream.Name}");
+
                             var img = new Image()
                             {
                                 CategoryId = vm.CategoryId,
-                                Name = vm.Name,
-                                Created = DateTime.Now,
-                                Path = blobUri.AbsoluteUri
+                                Name = vm.Name
                             };
 
                             await _imageRepo.Add(img);
-                        }
-                        catch (Exception err)
-                        {
-                            return null;
-                        }
+                        //}
+                        //catch (Exception err)
+                        //{
+                        //    return null;
+                        //}
                     }
                 }
 
