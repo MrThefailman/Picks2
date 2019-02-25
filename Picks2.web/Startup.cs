@@ -8,7 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Picks.core.Entities;
-using Picks.infrastructure.Cart;
+using Picks.infrastructure.CartService;
 using Picks.infrastructure.Data;
 using Picks.infrastructure.Helpers;
 using Picks.infrastructure.Repositories.Implementations;
@@ -51,6 +51,8 @@ namespace Picks.web
             
             services.AddTransient<UploadImageHelper>();
             services.AddTransient<AzureCognitiveServicesSettings>();
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddScoped(x => CartSession.GetCart(x));
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

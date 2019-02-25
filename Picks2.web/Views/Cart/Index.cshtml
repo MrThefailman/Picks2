@@ -1,1 +1,24 @@
-﻿
+﻿@model CartViewModel
+
+<h2>Ladda ner flera bilder</h2>
+<table>
+    <tbody>
+        @foreach(var Crow in Model.Cart.CartRows)
+        {
+            <tr>
+                <td><img src="@Crow.Image.Path" alt="card image cap" /></td>
+                <td>
+                    <a href="@Crow.Image.Path" download="@Crow.Image.Name" class="col col-sm-6">
+                        <button class="btn btn-warning">Ladda ner</button>
+                    </a>
+                </td>
+                <td>
+                    <form asp-action="RemoveFromCart" asp-controller="Cart">
+                        <input type="hidden" value="@Crow.Image.Id" />
+                        <button type="submit" class="btn btn-danger">Ta bort</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

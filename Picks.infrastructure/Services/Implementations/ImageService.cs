@@ -95,9 +95,11 @@ namespace Picks.infrastructure.Services.Implementations
                     {
                         //try
                         //{
-                            var client = new WebClient();
-                            client.Credentials = new NetworkCredential(CDNProfile.Username, CDNProfile.Password);
-                            client.UploadFile(
+                        var client = new WebClient
+                        {
+                            Credentials = new NetworkCredential(CDNProfile.Username, CDNProfile.Password)
+                        };
+                        client.UploadFile(
                                   "ftp://user_o2udupts@push-33.cdn77.com/www/Picks",
                                   WebRequestMethods.Ftp.AppendFile,
                                   $"{fileStream.Name}");

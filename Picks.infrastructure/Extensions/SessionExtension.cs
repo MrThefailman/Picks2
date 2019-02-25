@@ -6,20 +6,20 @@ namespace Picks.infrastructure.Extensions
 {
     public static class SessionExtensions
     {
-        public static async Task Set<T>(this ISession session, string key, T value)
+        public static void Set<T>(this ISession session, string key, T value)
         {
             if (!session.IsAvailable)
             {
-                await session.LoadAsync();
+                session.LoadAsync();
             }
             session.SetString(key, JsonConvert.SerializeObject(value));
         }
 
-        public static async Task<T> Get<T>(this ISession session, string key)
+        public static T Get<T>(this ISession session, string key)
         {
-            if (session.IsAvailable)
+            if (!session.IsAvailable)
             {
-                await session.LoadAsync();
+                session.LoadAsync();
             }
             var value = session.GetString(key);
             return value == null ? default(T) : JsonConvert.DeserializeObject<T>(value);

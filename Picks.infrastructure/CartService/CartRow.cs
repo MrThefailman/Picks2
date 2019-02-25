@@ -7,7 +7,7 @@ namespace Picks.infrastructure.Cart
 {
     public class CartRow
     {
+        public int Id { get; set; }
         public ImageViewModel Image { get; set; }
-        public int Quantity { get; set; }
     }
 }
